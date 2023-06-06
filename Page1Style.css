@@ -1,0 +1,124 @@
+table, td {
+    border-collapse: collapse;
+    border: solid black 3px;
+    background-color: aliceblue;
+}
+
+td {
+    text-align: center;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+td.schema {
+    background-color: khaki;
+    font-weight: bold;
+}
+
+caption {
+    margin-bottom: 15px;
+}
+
+span.important {
+    color: brown;
+    background-color: aquamarine;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+span.title {
+    font-size: 50px;
+    font-weight: 1000;
+    color: black;
+}
+
+nav#목차:hover {
+    width: 440px;
+}
+
+article > div {
+    line-height: 30px;
+    text-decoration-line: underline;
+    text-decoration-color: black;
+}
+
+section#목표 {
+    position: relative;
+    width: 60%;
+    height: 700px;
+}
+
+div.목표 {
+    position: absolute;
+    top: 30px;
+    border: solid black;
+    border-radius: 5px;
+    text-align: center;
+    width: 300px;
+    height: 400px;
+    animation-fill-mode: forwards;
+
+}
+
+div.목표#목표1 {
+    left: 300px;
+    background-color: magenta;
+}
+
+div.목표#목표2 {
+    left: 500px;
+    background-color: yellow;
+
+}
+
+div.목표#목표3 {
+    left: 700px;
+    background-color: cyan;
+}
+
+div#목표설명 {
+    position: relative;
+    top: 500px;
+    left: 300px;
+    width: 700px;
+    text-align: center;
+}
+
+div#성장과정 {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    width: auto;
+    height: auto;
+    margin-top: 20px;
+    margin-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: yellow;
+    list-style-position: inside;
+}
+
+div#성장과정 > div {
+    border-bottom: solid black;
+    border-width: 2px;
+}
+td.skilln {
+    border-right: none;
+}
+
+td.skillp {
+    border-left: none;
+}
+
+
+
+footer {
+    position: relative;
+    bottom: -70px;
+    margin-bottom: 200px;
+}
+
+footer div {
+    color: black;
+}

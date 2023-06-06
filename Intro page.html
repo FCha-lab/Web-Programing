@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>웹프로그래밍 과제</title>
+    <style>
+        @keyframes backgroundAni {
+            0% {
+                background-image: url("background1.png");
+                background-repeat: no-repeat;
+            }
+
+            25% {
+                background-image: url("background2.png");;
+                background-repeat: no-repeat;
+            }
+
+            50% {
+                background-image: url("background3.png");;
+                background-repeat: no-repeat;
+            }
+
+            75% {
+                background-image: url("background4.png");;
+                background-repeat: no-repeat;
+            }
+
+            100% {
+                background-image: url("background5.png");;
+                background-repeat: no-repeat;
+            }
+        }
+
+        #background {
+            animation-name: backgroundAni;
+            animation-duration: 15s;
+            animation-iteration-count: infinite;
+            background-size: cover;
+        }
+
+        fieldset {
+            background-color: white;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100px;
+            height: 170px;
+        }
+
+        legend {
+            font: bold 15px sans-serif;
+            color: blue;
+            background-color: white;
+            border: 2px solid black;
+        }
+
+        input {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+
+    <script>
+        window.addEventListener('load', function () {
+            let fieldset = document.querySelector('fieldset');
+            let windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            let windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            fieldset.style.left = windowWidth / 2 - 50 + 'px';
+            fieldset.style.top = windowHeight / 2 - 85 + 'px';
+        });
+        window.addEventListener('resize', function () {
+            let fieldset = document.querySelector('fieldset');
+            let windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            let windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            fieldset.style.left = windowWidth / 2 - 50 + 'px';
+            fieldset.style.top = windowHeight / 2 - 85 + 'px';
+        });
+    </script>
+</head>
+<body id="background">
+<form>
+    <fieldset>
+        <legend>정보 입력창</legend>
+        <label>이름<input type="text" id="name" size="10" placeholder="홍길동"></label><br>
+        <label>생년월일<input type="text" id="birthday" size="10" placeholder="000101"></label><br>
+        <input type="button" id="check" value="확인">
+    </fieldset>
+</form>
+
+<script>
+    let check = document.getElementById('check');
+    let name = document.getElementById('name');
+    let birthday = document.getElementById('birthday');
+    let isThroughIntro = true;
+    check.onclick = checkBtn;
+    localStorage.clear();
+
+    function checkBtn(){
+
+        if(name.value.trim() === ''){
+            alert('이름을 제대로 입력해주세요')
+            return 0;
+        }
+        if(birthday.value.length!=6 || isNaN(birthday.value)){
+            alert('생일을 제대로 입력해주세요')
+            return 0;
+        }
+
+        alert('환영합니다, ' + name.value.trim() + ' 님.');
+        localStorage.setItem('birthday', birthday.value);
+        localStorage.setItem('throughIntro', isThroughIntro);
+        window.open('Default%20Page&Self%20Introduction%20Page.html', '_self');
+
+    }
+</script>
+</body>
+</html>

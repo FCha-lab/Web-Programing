@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>웹프로그래밍 과제</title>
+    <link rel="stylesheet" href="pageStyle.css">
+    <link rel="stylesheet" href="Page3Style.css">
+    <script>
+        function Plan(isCustom, planName, startDate, endDate, planText, pictureUrl) {
+            this.isCustom = isCustom;
+            this.planName = planName
+            this.startDate = new Date(startDate);
+            this.endDate = new Date(endDate);
+            this.planText = planText;
+            this.pictureUrl = pictureUrl;
+        }
+
+
+        window.addEventListener('load', pagecheck);
+
+        function pagecheck() {
+            let throughIntro = localStorage.getItem('throughIntro');
+            if (throughIntro == null) {
+                window.open('Intro%20Page.html', '_self');
+            }
+        }
+
+        let planlist = [];
+        let storagePlan;
+        storagePlan = localStorage.getItem('planlist');
+        if (storagePlan) {
+            planlist = JSON.parse(storagePlan, (key, value) => {
+                if (key === 'startDate' || key === 'endDate') {
+                    return new Date(value);
+                }
+                return value;
+            });
+        } else {
+            planlist.push(new Plan(false, "25년 까지의 계획", "2024-01-01", "2025-12-31", "25년까지 저는 취업을 목적으로 노력할 계획입니다. 게임 기획자로서 포트폴리오를 준비하고 " +
+                "회사를 분석하며 이력서를 넣는 기간이 될것 같습니다. Unity, Unreal, 노션 등 현직에서 사용할 수 있는 툴과 기술을 착실하게 공부할 예정입니다.", "25year.jpg"));
+            planlist.push(new Plan(false, "30년 까지의 계획", "2026-01-01", "2029-12-31", "30년까지 저는 취업을 마치고 실질적인 프로젝트에 참가하여 게임을 개발하고 있을 계획입니다." +
+                "해당 기간은 저의 사회 첫 프로젝트이므로 열성을 다해 임하여 좋은 스펙으로 삼을 수 있도록 노력할 계획입니다.", "30year.jpg"));
+            planlist.push(new Plan(false, "35년 까지의 계획", "2030-01-01", "2034-12-31", "35년까지의 계획은 자기 개발 및 창작활동을 통한 자아실현에 집중할 계획입니다." +
+                "제 인생에 있어서 중요한 창작활동과 자기성찰을 하며, 만족할 수 있는 목표를 이뤄 꿈과 만족감을 이루기 위해 노력할 예정입니다.", "35year.jpg"));
+        }
+
+        function transformOut() {
+            target.innerHTML = "목차";
+        }
+
+        function checknav(event) {
+            switch (event.target) {
+                case navlist[0]:
+                    setExplain(planlist[0]);
+                    break;
+                case navlist[1]:
+                    setExplain(planlist[1]);
+                    break;
+                case navlist[2]:
+                    setExplain(planlist[2]);
+                    break;
+            }
+        }
+
+
+        function setExplain(plan) {
+            explain.style.border = "solid black 3px";
+            let ment;
+            if(plan.isCustom){
+                ment = "방문자에 의해 작성"
+            }else{
+                ment = "기존에 작성"
+            }
+            explain.innerHTML = "<h1>" + plan.planName + "</h1>" +
+                "<div>계획 시작일 : " + plan.startDate.getFullYear() + "년 " + String(plan.startDate.getMonth() + 1) + "월 " + plan.startDate.getDate() + "일</div>" +
+                "<div>계획 종료일 : " + plan.endDate.getFullYear() + "년 " + String(plan.endDate.getMonth() + 1) + "월 " + plan.endDate.getDate() + "일</div>" +
+                "<div>계획 : <div>" + plan.planText + "</div></div>" +
+                "<img src='" + plan.pictureUrl + "' width='600' height='300'>" +
+                "<div style='font-size: 4px'>해당 계획은 " + ment + "된 계획임을 안내드립니다.</div>";
+        }
+
+        let canvas;
+        let context;
+        let lineWidth;
+        let lineColor;
+
+        let newPlanName;
+        let newPlanStartDate;
+        let newPlanEndDate;
+        let newPlanText;
+        let newPlanPictureUrl;
+        let addPlanButton;
+
+        function createCustomDate() {
+            dateselect = new Date(document.getElementById('dateSelect').value);
+            explain.style.border = "solid black 3px";
+            explain.innerHTML = "<h1>해당 기간에는 계획이 없어요! 저의 일정을 한번 짜주시겠어요?</h1>" +
+                "<form>" +
+                "   <label>계획의 이름을 입력해 주세요! <input type='text' size='20' id='newPlanName'> </label><br>" +
+                "   <label>일정의 시작일을 입력해주세요! <input type='date' value='" + dateselect.getFullYear() + "-" + String(dateselect.getMonth() + 1).padStart(2, '0') + "-" + String(dateselect.getDate()).padStart(2, '0') + "' min='2024-01-01' max='2039-12-31' id='newPlanStartDate'></label><br>" +
+                "   <label>일정의 종료일을 입력해주세요! <input type='date' value='" + dateselect.getFullYear() + "-" + String(dateselect.getMonth() + 1).padStart(2, '0') + "-" + String(dateselect.getDate()).padStart(2, '0') + "' min='2024-01-01' max='2039-12-31' id='newPlanEndDate'></label><br>" +
+                "   <label>일정의 내용을 입력해 주세요!<br><textarea rows='10' cols='70' maxlength='400' placeholder='내용' id='newPlanText'></textarea></label><br>" +
+                "   <label>상상되는 미래의 모습을 그려주세요!<br>" +
+                "   <canvas id='canvas' width='600' height='400' style='background-color: aliceblue'></canvas><br>" +
+                "   </label>" +
+                "   <label>선굵기 :<input id='lineWidth' type='text' size='5'></label>" +
+                "   <label>선 색 : <input id='lineColor' type='color'></label><br>" +
+                "   <input type='button' value='계획 생성' id='addPlanButton'>" +
+                "</form>";
+            canvas = document.getElementById('canvas');
+            context = canvas.getContext('2d');
+            lineWidth = document.getElementById('lineWidth');
+            lineColor = document.getElementById('lineColor');
+
+            canvas.addEventListener("mousedown", down, false);
+            canvas.addEventListener("mousemove", move, false);
+            canvas.addEventListener("mouseup", up, false);
+            canvas.addEventListener("mouseout", out, false);
+
+            addPlanButton = document.getElementById('addPlanButton');
+
+            addPlanButton.addEventListener('click', tryAdd);
+        }
+
+        function tryAdd(){
+            if(newPlanStartDate>newPlanEndDate){
+                alert("시작일이 종료일보다 뒤에 있습니다! 정상적인 범위를 지정한 뒤 다시 시도해 주세요!");
+                return;
+            }
+            for(let i=0;i<planlist.length;i++){
+                if(checkPlan(i, newPlanStartDate)){
+                    alert("해당 계획의 시작일엔 이미 일정이 존재합니다! 다른 날을 선택해주세요!");
+                    return;
+                }
+                if(checkPlan(i, newPlanEndDate)){
+                    alert("해당 계획의 종료일엔 이미 일정이 존재합니다! 다른 날을 선택해주세요!");
+                    return;
+                }
+            }
+
+            newPlanName = document.getElementById('newPlanName').value;
+            newPlanStartDate = new Date(document.getElementById('newPlanStartDate').value);
+            newPlanEndDate = new Date(document.getElementById('newPlanEndDate').value);
+            newPlanText = document.getElementById('newPlanText').value;
+            newPlanPictureUrl = canvas.toDataURL();
+
+            let newPlan = new Plan(true, newPlanName, newPlanStartDate, newPlanEndDate, newPlanText, newPlanPictureUrl);
+            planlist.push(newPlan);
+            localStorage.setItem('planlist', JSON.stringify(planlist));
+            let option = document.createElement("option");
+            option.text = planlist[planlist.length-1].planName;
+            combo.add(option);
+            alert("성공적으로 계획을 추가했습니다!");
+            setExplain(planlist[planlist.length-1]);
+        }
+
+        let startX = 0, startY = 0, endX = 0, endY = 0;
+        let isDragging = false;
+
+        function down(e) {
+            isDragging = true;
+            startX = e.offsetX;
+            startY = e.offsetY;
+            endX = e.offsetX;
+            endY = e.offsetY;
+            context.beginPath();
+            context.lineWidth = parseInt(lineWidth.value);
+            context.strokeStyle = lineColor.value;
+            context.moveTo(startX, startY);
+            context.lineTo(endX, endY);
+            context.stroke();
+        }
+
+        function move(e) {
+            if (isDragging) {
+                endX = e.offsetX;
+                endY = e.offsetY;
+                context.beginPath();
+                context.lineWidth = parseInt(lineWidth.value);
+                context.strokeStyle = lineColor.value;
+                context.moveTo(startX, startY);
+                context.lineTo(endX, endY);
+                context.stroke();
+                startX = e.offsetX;
+                startY = e.offsetY;
+            }
+        }
+
+        function up(e) {
+            endX = e.offsetX;
+            endY = e.offsetY;
+            context.beginPath();
+            context.moveTo(startX, startY);
+            context.lineTo(endX, endY);
+            context.stroke();
+            startX = e.offsetX;
+            startY = e.offsetY;
+            isDragging = false;
+        }
+
+        function out(e) {
+        }
+
+        function checkPlan(i, date) {
+            if (planlist[i].startDate <= date && planlist[i].endDate >= date) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function showPlan() {
+            dateselect = new Date(document.getElementById('dateSelect').value);
+            for (let i = 0; i < planlist.length; i++) {
+                if (checkPlan(i, dateselect)) {
+                    setExplain(planlist[i]);
+                    return;
+                }
+            }
+
+            createCustomDate();
+        }
+
+
+    </script>
+</head>
+<body>
+<audio id="audio" src="bgm.mp3" onloadstart="this.volume = 0.4" controls autoplay loop></audio>
+<header>
+    <nav>
+        <hr>
+        <br>
+        <div class="다른페이지"><span><a href="Default%20Page&Self%20Introduction%20Page.html"
+                                    target="_self">본인 소개</a></span></div>
+        <div class="다른페이지"><span><a href="Interesting%20Infromation%20Page.html" target="_self">관심 기술과 기업</a></span>
+        </div>
+        <div class="현재페이지"><span>미래 계획</span></div>
+        <br>
+        <hr>
+    </nav>
+</header>
+
+<div>
+    <section>
+        <input type="date" value="2024-01-01" min="2024-01-01" max="2039-12-31" id="dateSelect"><br>
+        <input type="button" id="searchPlan" value="계획 확인"><select id="combo"></select>
+        <div id="explain"></div>
+        <div id="dma"></div>
+    </section>
+</div>
+<nav id="목차">
+    목차
+</nav>
+<aside>
+    <table>
+        <tr>
+            <td>
+                <a href="http://www.gamejob.co.kr/main/home" target="_blank"><img src="gamejob.png" width="140"
+                                                                                  height="140"></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>게임잡</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://www.jobplanet.co.kr/welcome/index" target="_blank"><img src="jabPlanet.png" width="140"
+                                                                                         height="140"></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>잡플래닛</strong>
+            </td>
+        </tr>
+    </table>
+</aside>
+
+<script>
+
+    let target = document.getElementById('목차');
+
+    target.addEventListener('mouseenter', transformHover);
+    target.addEventListener('mouseleave', transformOut);
+
+    let navlist = new Array(3);
+    let explain = document.getElementById('explain');
+
+    function transformHover() {
+        let navtarget;
+        target.innerHTML = "<div>목차</div>" +
+            "<ol type='1'>" +
+            "계획<br>" +
+            "<li class='계획'>25년 까지의 계획</li>" +
+            "<li class='계획'>30년 까지의 계획</li>" +
+            "<li class='계획'>35년 까지의 계획</li>"
+        navtarget = document.getElementsByClassName('계획');
+        for (let i = 0; i < navtarget.length; i++) {
+            navlist[i] = navtarget[i];
+            navtarget[i].addEventListener('click', checknav);
+        }
+    }
+
+    let searchPlan = document.getElementById('searchPlan');
+    let dateselect = new Date(document.getElementById('dateSelect').value);
+    let combo = document.getElementById('combo');
+    for (let i = 0; i < planlist.length; i++) {
+        let option = document.createElement("option");
+        option.text = planlist[i].planName;
+        combo.add(option);
+    }
+
+    searchPlan.addEventListener('click', showPlan);
+    combo.addEventListener('change', function () {
+        setExplain(planlist[combo.selectedIndex]);
+    });
+
+
+</script>
+</body>
+</html>

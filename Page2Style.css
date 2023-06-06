@@ -1,0 +1,14 @@
+nav#목차:hover {
+    width: 440px;
+}
+
+td.explain {
+    color: black;
+    text-align: center;
+    width: 500px;
+    list-style-position: inside;
+}
+
+article {
+    margin-bottom: 20px;
+}

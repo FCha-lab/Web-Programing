@@ -1,0 +1,28 @@
+nav#목차:hover {
+    width: 220px;
+}
+
+div#explain {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 700px;
+    height: auto;
+    padding: 20px;
+}
+
+div#explain > h1 {
+    text-align: center;
+}
+
+div#explain > form {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#searchPlan {
+    margin-right: 40px;
+}
+
+div#explain img{
+    background-color: aliceblue;
+}
